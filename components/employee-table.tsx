@@ -148,9 +148,10 @@ export function EmployeeTable() {
       </div>
 
       {/* Table */}
-      <Table>
-        <Table.ScrollContainer>
-          <Table.Content aria-label="All employees" className="min-w-[700px]">
+      <div className="w-full min-w-0 max-w-full overflow-hidden">
+        <Table>
+          <Table.ScrollContainer className="w-full overflow-x-auto">
+            <Table.Content aria-label="All employees" className="min-w-[700px]">
             <Table.Header>
               <Table.Column isRowHeader>Worker ID</Table.Column>
               <Table.Column>Member</Table.Column>
@@ -240,8 +241,9 @@ export function EmployeeTable() {
               ))}
             </Table.Body>
           </Table.Content>
-        </Table.ScrollContainer>
-      </Table>
+          </Table.ScrollContainer>
+        </Table>
+      </div>
 
       {/* Pagination */}
       {mounted && (

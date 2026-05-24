@@ -6,7 +6,7 @@ import { Bell, UserPlus, PanelLeft, Sun, Moon } from "lucide-react";
 import { useSidebar } from "@/components/sidebar-context";
 
 export function TopNavbar() {
-  const { toggle } = useSidebar();
+  const { toggle, toggleMobile } = useSidebar();
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
   const [mounted, setMounted] = React.useState(false);
 
@@ -42,20 +42,28 @@ export function TopNavbar() {
     }
   };
 
+  const handleToggle = () => {
+    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
+      toggle();
+    } else {
+      toggleMobile();
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-40 h-16 bg-background">
-      <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3">
-        <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar" onClick={toggle}>
+    <header className="sticky top-0 z-40 h-16 bg-background w-full">
+      <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3 w-full min-w-0">
+        <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar" onClick={handleToggle}>
           <PanelLeft className="size-4" />
         </Button>
 
-        <h1 className="text-xl font-semibold text-foreground truncate">
+        <h1 className="text-xl font-semibold text-foreground truncate min-w-0 flex-shrink">
           Good morning, Piyu!
         </h1>
 
-        <div className="flex-1" />
+        <div className="flex-1 min-w-0" />
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           {mounted && (
             <Button
               isIconOnly
@@ -81,7 +89,7 @@ export function TopNavbar() {
           </Button>
           <Button size="sm">
             <UserPlus className="size-4" />
-            Invite
+            <span className="hidden sm:inline">Invite</span>
           </Button>
         </div>
       </div>

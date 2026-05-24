@@ -5,16 +5,31 @@ import * as React from "react";
 interface SidebarContextType {
   isCollapsed: boolean;
   toggle: () => void;
+  isMobileOpen: boolean;
+  toggleMobile: () => void;
+  closeMobile: () => void;
 }
 
 const SidebarContext = React.createContext<SidebarContextType | undefined>(undefined);
 
 export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
+  const [isMobileOpen, setIsMobileOpen] = React.useState(false);
+
   const toggle = () => setIsCollapsed((prev) => !prev);
+  const toggleMobile = () => setIsMobileOpen((prev) => !prev);
+  const closeMobile = () => setIsMobileOpen(false);
 
   return (
-    <SidebarContext.Provider value={{ isCollapsed, toggle }}>
+    <SidebarContext.Provider
+      value={{
+        isCollapsed,
+        toggle,
+        isMobileOpen,
+        toggleMobile,
+        closeMobile,
+      }}
+    >
       {children}
     </SidebarContext.Provider>
   );
