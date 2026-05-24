@@ -64,7 +64,7 @@ export function TopNavbar() {
             </Button>
           )}
           {!mounted && (
-            <Button isIconOnly size="sm" variant="tertiary" aria-label="Loading theme" disabled>
+            <Button isIconOnly size="sm" variant="tertiary" aria-label="Loading theme" isDisabled>
               <span className="size-4 block rounded-full bg-default-200 animate-pulse" />
             </Button>
           )}
