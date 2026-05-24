@@ -53,7 +53,7 @@ function MiniStat({ value, trend, label }: MiniStatProps) {
 export function SalesChart() {
   return (
     <Card className="rounded-2xl shadow-sm border border-divider overflow-hidden">
-      <div className="flex items-center justify-between px-5 pt-5 pb-2">
+      <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <h3 className="text-base font-semibold text-foreground">
           Sales Performance
         </h3>
@@ -91,7 +91,7 @@ export function SalesChart() {
         </Select>
       </div>
 
-      <div className="px-5 pb-4">
+      <div className="px-4 pb-3">
         <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-4">
           <MiniStat value="US$28,441" trend="3.3%" label="Weekly Sales" />
           <MiniStat value="US$4,063" trend="3.3%" label="Daily Sales" />

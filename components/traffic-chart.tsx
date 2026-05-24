@@ -42,7 +42,7 @@ function LegendDot({ color, label }: { color: string; label: string }) {
 export function TrafficChart() {
   return (
     <Card className="rounded-2xl shadow-sm border border-divider overflow-hidden">
-      <div className="flex items-center justify-between px-5 pt-5 pb-2">
+      <div className="flex items-center justify-between px-4 pt-4 pb-2">
         <h3 className="text-base font-semibold text-foreground">
           Traffic Source
         </h3>
@@ -62,7 +62,7 @@ export function TrafficChart() {
         </div>
       </div>
 
-      <div className="px-5 pb-4">
+      <div className="px-4 pb-3">
         <div className="mb-4">
           <span className="text-lg font-semibold tabular-nums text-foreground">
             231,856
