@@ -120,3 +120,31 @@ To maintain layout stability and eliminate React rendering errors, developers mu
     setPage(1);
   };
   ```
+
+---
+
+## 6. Mobile Responsiveness & Touch Interaction Lessons
+
+To guarantee a seamless experience across actual touch viewports and tablets, developers must adhere to the following responsive design rules:
+
+### A. Preventing Viewport Scale Leakage (Zoom-Out Prevention)
+* **Problem**: Complex layout blocks (like Recharts SVGs or dense pagination tables) default to a minimum layout width in flex/grid structures. If they exceed the mobile width, the mobile browser forces a zoom-out to fit the wider content, creating a blank white strip on the right.
+* **Solution**: 
+  - Restrict the `html, body` elements in global styles using `max-width: 100%; overflow-x: hidden;`.
+  - Always wrap Recharts `<ResponsiveContainer>` blocks inside a container styled with `w-full min-w-0 overflow-hidden`. This forces the SVG engine to scale down relative to the parent flex/grid cell.
+  - Constrain tables and dense listings inside wrapper containers configured with `w-full min-w-0 overflow-hidden` and enable local horizontal scrolling on the table element (`overflow-x-auto`).
+
+### B. Event Normalization & Touch Targets on Mobile
+* **Problem**: Standard HTML `onClick` attributes can be swallowed or delayed on real touch devices due to pointer event synthesis. When using HeroUI (which wraps React Aria), this is amplified as the library manages native touch/keyboard focuses.
+* **Solution**: 
+  - Switch custom actions on HeroUI `<Button>` elements to use `onPress` instead of `onClick`. `onPress` normalizes click, pointer, and touch events automatically across all viewports.
+  - On dense layout items (like pagination controls), hide unnecessary text labels on mobile screens using responsive Tailwind classes (e.g. `<span className="hidden sm:inline">Previous</span>`) and rely on clear icons (like `<Pagination.PreviousIcon />`) to keep layout footprints compact.
+
+### C. Stabilizing Callback Hooks in Event Listeners
+* **Problem**: Toggling sidebar states from a header button often triggers layout-wide re-renders. If callbacks passed as context values (like `closeMobile`) are not memoized, they are recreated on every render. Any `useEffect` listening to these callbacks (e.g. closing the drawer on path changes) will trigger in an infinite loop, resetting the drawer state immediately back to closed.
+* **Solution**: Memoize all state-mutating context hooks (e.g., `toggle`, `toggleMobile`, `closeMobile`) inside the provider using `React.useCallback`:
+  ```tsx
+  const closeMobile = React.useCallback(() => {
+    setIsMobileOpen(false);
+  }, []);
+  ```
