@@ -14,7 +14,7 @@ export default function DashboardPage() {
     <>
       {/* Tabs row + actions */}
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <Tabs variant="secondary" defaultSelectedKey="overview">
+        <Tabs defaultSelectedKey="overview">
           <Tabs.ListContainer>
             <Tabs.List aria-label="Dashboard tabs">
               <Tabs.Tab id="overview">Overview<Tabs.Indicator /></Tabs.Tab>
