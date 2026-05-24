@@ -11,15 +11,21 @@ export function TopNavbar() {
   React.useEffect(() => {
     const savedTheme = localStorage.getItem("theme");
     const isDark = savedTheme === "dark" || (!savedTheme && window.matchMedia("(pre-media: dark-mode)").matches);
+    const resolvedTheme = isDark || document.documentElement.classList.contains("dark") ? "dark" : "light";
     
-    if (isDark || document.documentElement.classList.contains("dark")) {
+    if (resolvedTheme === "dark") {
       document.documentElement.classList.add("dark");
-      setTheme("dark");
     } else {
       document.documentElement.classList.remove("dark");
-      setTheme("light");
     }
-    setMounted(true);
+
+    // Defer state updates to avoid synchronous cascading renders
+    const frameId = requestAnimationFrame(() => {
+      setTheme(resolvedTheme);
+      setMounted(true);
+    });
+
+    return () => cancelAnimationFrame(frameId);
   }, []);
 
   const toggleTheme = () => {
@@ -35,14 +41,14 @@ export function TopNavbar() {
   };
 
   return (
-    <header className="sticky top-0 z-40 h-16 bg-background border-b border-divider/40">
+    <header className="sticky top-0 z-40 h-16 bg-background">
       <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3">
         <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar">
           <PanelLeft className="size-4" />
         </Button>
 
         <h1 className="text-xl font-semibold text-foreground truncate">
-          Good morning, Piyu
+          Good morning, Piyu!
         </h1>
 
         <div className="flex-1" />
