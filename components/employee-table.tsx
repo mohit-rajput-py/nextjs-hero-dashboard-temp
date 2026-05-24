@@ -98,6 +98,16 @@ export function EmployeeTable() {
 
         {/* Toolbar */}
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+          <SearchField
+            aria-label="Search employees"
+            className="w-full sm:w-[220px]"
+          >
+            <SearchField.Group>
+              <SearchField.SearchIcon />
+              <SearchField.Input placeholder="Search..." />
+              <SearchField.ClearButton />
+            </SearchField.Group>
+          </SearchField>
           <div className="flex flex-wrap items-center gap-2">
             <Button size="sm" variant="tertiary">
               <SlidersHorizontal className="size-4" />
@@ -112,16 +122,7 @@ export function EmployeeTable() {
               Columns
             </Button>
           </div>
-          <SearchField
-            aria-label="Search employees"
-            className="w-full sm:w-[220px]"
-          >
-            <SearchField.Group>
-              <SearchField.SearchIcon />
-              <SearchField.Input placeholder="Search..." />
-              <SearchField.ClearButton />
-            </SearchField.Group>
-          </SearchField>
+          
         </div>
       </div>
 

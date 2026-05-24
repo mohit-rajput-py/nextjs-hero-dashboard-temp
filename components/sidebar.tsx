@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   Home,
   Receipt,
@@ -34,18 +34,20 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
-  const router = useRouter();
   const { isCollapsed } = useSidebar();
   const isOrdersRoute = pathname.startsWith("/orders");
   const [isOrdersExpanded, setIsOrdersExpanded] = React.useState(isOrdersRoute);
 
   // Sync expanded state if the route changes to /orders/*, or close on collapse
   React.useEffect(() => {
-    if (isOrdersRoute) {
-      setIsOrdersExpanded(true);
-    } else if (isCollapsed) {
-      setIsOrdersExpanded(false);
-    }
+    const frameId = requestAnimationFrame(() => {
+      if (isOrdersRoute) {
+        setIsOrdersExpanded(true);
+      } else if (isCollapsed) {
+        setIsOrdersExpanded(false);
+      }
+    });
+    return () => cancelAnimationFrame(frameId);
   }, [pathname, isOrdersRoute, isCollapsed]);
 
   return (
@@ -57,7 +59,7 @@ export function Sidebar() {
       {/* Header: Company logo & name */}
       <div className={`px-4 py-4 ${isCollapsed ? "px-2" : "px-4"}`}>
         <div className={`flex items-center px-1 py-1 ${isCollapsed ? "justify-center" : "gap-2.5"}`}>
-          <div className="flex size-7 items-center justify-center rounded-lg bg-[var(--accent)] text-white shrink-0">
+          <div className="flex size-7 items-center justify-center rounded-lg bg-accent text-white shrink-0">
             <Command className="size-4 shrink-0" />
           </div>
           {!isCollapsed && (
