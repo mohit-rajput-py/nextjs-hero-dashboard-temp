@@ -9,6 +9,7 @@ import {
   SearchField,
   Dropdown,
   Label,
+  Pagination,
 } from "@heroui/react";
 import {
   Copy,
@@ -29,64 +30,25 @@ interface Employee {
 }
 
 const employees: Employee[] = [
-  {
-    id: 1,
-    workerId: "#4586936",
-    name: "Alex Turner",
-    email: "alex@acme.com",
-    avatar: "https://i.pravatar.cc/150?u=alex",
-    role: "Product Manager",
-    workerType: "Employee",
-  },
-  {
-    id: 2,
-    workerId: "#4586937",
-    name: "Emma Davis",
-    email: "emma@acme.com",
-    avatar: "https://i.pravatar.cc/150?u=emma",
-    role: "Senior Designer",
-    workerType: "Employee",
-  },
-  {
-    id: 3,
-    workerId: "#4586933",
-    name: "John Smith",
-    email: "john@acme.com",
-    avatar: "https://i.pravatar.cc/150?u=john",
-    role: "Chief Technology Officer",
-    workerType: "Employee",
-  },
-  {
-    id: 4,
-    workerId: "#4586932",
-    name: "Kate Moore",
-    email: "kate@acme.com",
-    avatar: "https://i.pravatar.cc/150?u=kate",
-    role: "Chief Executive Officer",
-    workerType: "Employee",
-  },
-  {
-    id: 5,
-    workerId: "#4586935",
-    name: "Mike Wilson",
-    email: "mike@acme.com",
-    avatar: "https://i.pravatar.cc/150?u=mike",
-    role: "VP of Engineering",
-    workerType: "Employee",
-  },
-  {
-    id: 6,
-    workerId: "#4586934",
-    name: "Sara Johnson",
-    email: "sara@acme.com",
-    avatar: "https://i.pravatar.cc/150?u=sara",
-    role: "Chief Marketing Officer",
-    workerType: "Employee",
-  },
+  { id: 1, workerId: "#4586936", name: "Alex Turner", email: "alex@acme.com", avatar: "https://i.pravatar.cc/150?u=alex", role: "Product Manager", workerType: "Employee" },
+  { id: 2, workerId: "#4586937", name: "Emma Davis", email: "emma@acme.com", avatar: "https://i.pravatar.cc/150?u=emma", role: "Senior Designer", workerType: "Employee" },
+  { id: 3, workerId: "#4586933", name: "John Smith", email: "john@acme.com", avatar: "https://i.pravatar.cc/150?u=john", role: "Chief Technology Officer", workerType: "Employee" },
+  { id: 4, workerId: "#4586932", name: "Kate Moore", email: "kate@acme.com", avatar: "https://i.pravatar.cc/150?u=kate", role: "Chief Executive Officer", workerType: "Employee" },
+  { id: 5, workerId: "#4586935", name: "Mike Wilson", email: "mike@acme.com", avatar: "https://i.pravatar.cc/150?u=mike", role: "VP of Engineering", workerType: "Employee" },
+  { id: 6, workerId: "#4586934", name: "Sara Johnson", email: "sara@acme.com", avatar: "https://i.pravatar.cc/150?u=sara", role: "Chief Marketing Officer", workerType: "Employee" },
+  { id: 7, workerId: "#4586938", name: "David Miller", email: "david@acme.com", avatar: "https://i.pravatar.cc/150?u=david", role: "QA Engineer", workerType: "Contractor" },
+  { id: 8, workerId: "#4586939", name: "Sophia Martinez", email: "sophia@acme.com", avatar: "https://i.pravatar.cc/150?u=sophia", role: "Frontend Developer", workerType: "Employee" },
+  { id: 9, workerId: "#4586940", name: "James Anderson", email: "james@acme.com", avatar: "https://i.pravatar.cc/150?u=james", role: "Backend Developer", workerType: "Employee" },
+  { id: 10, workerId: "#4586941", name: "Olivia Thomas", email: "olivia@acme.com", avatar: "https://i.pravatar.cc/150?u=olivia", role: "HR Manager", workerType: "Employee" },
+  { id: 11, workerId: "#4586942", name: "Robert Taylor", email: "robert@acme.com", avatar: "https://i.pravatar.cc/150?u=robert", role: "Data Scientist", workerType: "Employee" },
+  { id: 12, workerId: "#4586943", name: "Isabella White", email: "isabella@acme.com", avatar: "https://i.pravatar.cc/150?u=isabella", role: "Product Designer", workerType: "Contractor" },
 ];
 
 export function EmployeeTable() {
   const [mounted, setMounted] = React.useState(false);
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [page, setPage] = React.useState(1);
+  const itemsPerPage = 5;
 
   React.useEffect(() => {
     const frameId = requestAnimationFrame(() => {
@@ -94,6 +56,53 @@ export function EmployeeTable() {
     });
     return () => cancelAnimationFrame(frameId);
   }, []);
+
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setPage(1);
+  };
+
+  const filteredEmployees = employees.filter((emp) =>
+    emp.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    emp.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    emp.role.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    emp.workerId.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const totalPages = Math.max(1, Math.ceil(filteredEmployees.length / itemsPerPage));
+  const paginatedEmployees = filteredEmployees.slice(
+    (page - 1) * itemsPerPage,
+    page * itemsPerPage
+  );
+
+  const startItem = filteredEmployees.length === 0 ? 0 : (page - 1) * itemsPerPage + 1;
+  const endItem = Math.min(page * itemsPerPage, filteredEmployees.length);
+
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+    if (totalPages <= 3) {
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(i);
+      }
+    } else {
+      pages.push(1);
+      if (page <= 2) {
+        pages.push(2);
+        pages.push("ellipsis");
+        pages.push(totalPages);
+      } else if (page >= totalPages - 1) {
+        pages.push("ellipsis");
+        pages.push(totalPages - 1);
+        pages.push(totalPages);
+      } else {
+        pages.push("ellipsis");
+        pages.push(page);
+        pages.push("ellipsis");
+        pages.push(totalPages);
+      }
+    }
+    return pages;
+  };
 
   return (
     <div className="flex flex-col gap-4">
@@ -103,7 +112,7 @@ export function EmployeeTable() {
           <span className="text-base font-semibold text-foreground">
             All Employees
           </span>
-          <Chip size="sm" variant="soft">32</Chip>
+          <Chip size="sm" variant="soft">{filteredEmployees.length}</Chip>
         </div>
 
         {/* Toolbar */}
@@ -111,6 +120,8 @@ export function EmployeeTable() {
           <SearchField
             aria-label="Search employees"
             className="w-full sm:w-[220px]"
+            value={searchQuery}
+            onChange={handleSearchChange}
           >
             <SearchField.Group>
               <SearchField.SearchIcon />
@@ -148,7 +159,7 @@ export function EmployeeTable() {
               <Table.Column className="text-end">Actions</Table.Column>
             </Table.Header>
             <Table.Body>
-              {employees.map((emp) => (
+              {paginatedEmployees.map((emp) => (
                 <Table.Row key={emp.id} id={emp.id}>
                   {/* Worker ID */}
                   <Table.Cell>
@@ -231,6 +242,53 @@ export function EmployeeTable() {
           </Table.Content>
         </Table.ScrollContainer>
       </Table>
+
+      {/* Pagination */}
+      {mounted && (
+        <div className="flex w-full items-center justify-between pt-4">
+          <Pagination size="sm" className="w-full">
+            <Pagination.Summary>
+              Showing {startItem}-{endItem} of {filteredEmployees.length} results
+            </Pagination.Summary>
+            <Pagination.Content>
+              <Pagination.Item>
+                <Pagination.Previous
+                  isDisabled={page === 1}
+                  onPress={() => setPage((p) => p - 1)}
+                >
+                  <Pagination.PreviousIcon />
+                  <span>Previous</span>
+                </Pagination.Previous>
+              </Pagination.Item>
+              {getPageNumbers().map((p, i) =>
+                p === "ellipsis" ? (
+                  <Pagination.Item key={`ellipsis-${i}`}>
+                    <Pagination.Ellipsis />
+                  </Pagination.Item>
+                ) : (
+                  <Pagination.Item key={p}>
+                    <Pagination.Link
+                      isActive={p === page}
+                      onPress={() => setPage(p as number)}
+                    >
+                      {p}
+                    </Pagination.Link>
+                  </Pagination.Item>
+                )
+              )}
+              <Pagination.Item>
+                <Pagination.Next
+                  isDisabled={page === totalPages || filteredEmployees.length === 0}
+                  onPress={() => setPage((p) => p + 1)}
+                >
+                  <span>Next</span>
+                  <Pagination.NextIcon />
+                </Pagination.Next>
+              </Pagination.Item>
+            </Pagination.Content>
+          </Pagination>
+        </div>
+      )}
     </div>
   );
 }

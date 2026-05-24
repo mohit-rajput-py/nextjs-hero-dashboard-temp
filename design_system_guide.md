@@ -110,3 +110,13 @@ To maintain layout stability and eliminate React rendering errors, developers mu
     </Dropdown.Popover>
   </Dropdown>
   ```
+
+### D. Managing State Dependencies in Event Handlers
+* **Problem**: Using `useEffect` to reset a state variable (e.g. resetting page number to `1` when `searchQuery` changes) triggers a cascading render warning from React and the compiler.
+* **Solution**: Avoid `useEffect` for state resets triggered by direct user interactions. Instead, batch both state changes inside the input's `onChange` event handler:
+  ```tsx
+  const handleSearchChange = (query: string) => {
+    setSearchQuery(query);
+    setPage(1);
+  };
+  ```
