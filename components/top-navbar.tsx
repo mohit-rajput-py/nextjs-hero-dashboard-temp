@@ -1,11 +1,41 @@
 "use client";
 
+import * as React from "react";
 import { Button } from "@heroui/react";
-import { Search, Bell, UserPlus, PanelLeft } from "lucide-react";
+import { Bell, UserPlus, PanelLeft, Sun, Moon } from "lucide-react";
 
 export function TopNavbar() {
+  const [theme, setTheme] = React.useState<"light" | "dark">("light");
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    const isDark = savedTheme === "dark" || (!savedTheme && window.matchMedia("(pre-media: dark-mode)").matches);
+    
+    if (isDark || document.documentElement.classList.contains("dark")) {
+      document.documentElement.classList.add("dark");
+      setTheme("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+      setTheme("light");
+    }
+    setMounted(true);
+  }, []);
+
+  const toggleTheme = () => {
+    if (theme === "dark") {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+      setTheme("light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+      setTheme("dark");
+    }
+  };
+
   return (
-    <header className="sticky top-0 z-40 h-16 bg-background">
+    <header className="sticky top-0 z-40 h-16 bg-background border-b border-divider/40">
       <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3">
         <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar">
           <PanelLeft className="size-4" />
@@ -18,9 +48,26 @@ export function TopNavbar() {
         <div className="flex-1" />
 
         <div className="flex items-center gap-2">
-          <Button isIconOnly size="sm" variant="tertiary" aria-label="Search">
-            <Search className="size-4" />
-          </Button>
+          {mounted && (
+            <Button
+              isIconOnly
+              size="sm"
+              variant="tertiary"
+              aria-label="Toggle theme"
+              onClick={toggleTheme}
+            >
+              {theme === "dark" ? (
+                <Sun className="size-4 text-warning" />
+              ) : (
+                <Moon className="size-4 text-default-500" />
+              )}
+            </Button>
+          )}
+          {!mounted && (
+            <Button isIconOnly size="sm" variant="tertiary" aria-label="Loading theme" disabled>
+              <span className="size-4 block rounded-full bg-default-200 animate-pulse" />
+            </Button>
+          )}
           <Button isIconOnly size="sm" variant="tertiary" aria-label="Notifications">
             <Bell className="size-4" />
           </Button>
