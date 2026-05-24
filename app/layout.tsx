@@ -34,10 +34,10 @@ export default function RootLayout({
         <Sidebar />
 
         {/* Main area */}
-        <div className="flex flex-1 flex-col ml-[220px]">
+        <div className="flex flex-1 flex-col ml-(--sidebar-width)">
           <TopNavbar />
           <main className="flex-1">
-            <div className="mx-auto max-w-7xl px-3 py-3 pb-10 flex flex-col gap-4">
+            <div className="mx-auto max-w-7xl px-5 py-3 pb-10 flex flex-col gap-4">
               {children}
             </div>
           </main>

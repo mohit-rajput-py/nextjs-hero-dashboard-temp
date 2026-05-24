@@ -26,7 +26,7 @@ const footerItems = [
 
 export function Sidebar() {
   return (
-    <aside className="fixed left-0 top-0 h-screen w-[220px] border-r border-divider bg-background z-50 flex flex-col">
+    <aside className="fixed left-0 top-0 h-screen w-(--sidebar-width) border-r border-divider bg-background z-50 flex flex-col">
       {/* Header: User info */}
       <div className="px-4 py-4">
         <div className="flex items-center gap-3 px-1 py-1">

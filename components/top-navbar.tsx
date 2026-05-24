@@ -6,7 +6,7 @@ import { Search, Bell, UserPlus, PanelLeft } from "lucide-react";
 export function TopNavbar() {
   return (
     <header className="sticky top-0 z-40 h-16 bg-background">
-      <div className="mx-auto max-w-7xl px-3 py-4 pb-10 flex items-center justify-between gap-4">
+      <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3">
         <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar">
           <PanelLeft className="size-4" />
         </Button>
