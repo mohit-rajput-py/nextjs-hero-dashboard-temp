@@ -3,8 +3,10 @@
 import * as React from "react";
 import { Button } from "@heroui/react";
 import { Bell, UserPlus, PanelLeft, Sun, Moon } from "lucide-react";
+import { useSidebar } from "@/components/sidebar-context";
 
 export function TopNavbar() {
+  const { toggle } = useSidebar();
   const [theme, setTheme] = React.useState<"light" | "dark">("light");
   const [mounted, setMounted] = React.useState(false);
 
@@ -43,7 +45,7 @@ export function TopNavbar() {
   return (
     <header className="sticky top-0 z-40 h-16 bg-background">
       <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3">
-        <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar">
+        <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar" onClick={toggle}>
           <PanelLeft className="size-4" />
         </Button>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   Receipt,
@@ -12,6 +12,7 @@ import {
   Command,
 } from "lucide-react";
 import { Avatar, Chip, ScrollShadow, Disclosure } from "@heroui/react";
+import { useSidebar } from "@/components/sidebar-context";
 
 const navItems = [
   { label: "Dashboard", icon: Home, href: "/" },
@@ -33,39 +34,49 @@ const navItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
+  const { isCollapsed } = useSidebar();
   const isOrdersRoute = pathname.startsWith("/orders");
   const [isOrdersExpanded, setIsOrdersExpanded] = React.useState(isOrdersRoute);
 
-  // Sync expanded state if the route changes to /orders/*
+  // Sync expanded state if the route changes to /orders/*, or close on collapse
   React.useEffect(() => {
     if (isOrdersRoute) {
       setIsOrdersExpanded(true);
+    } else if (isCollapsed) {
+      setIsOrdersExpanded(false);
     }
-  }, [pathname, isOrdersRoute]);
+  }, [pathname, isOrdersRoute, isCollapsed]);
 
   return (
-    <aside className="fixed left-0 top-0 h-screen w-(--sidebar-width) border-r border-divider bg-background z-50 flex flex-col">
+    <aside
+      className={`fixed left-0 top-0 h-screen border-r border-divider bg-background z-50 flex flex-col transition-all duration-300 ${
+        isCollapsed ? "w-16" : "w-(--sidebar-width)"
+      }`}
+    >
       {/* Header: Company logo & name */}
-      <div className="px-4 py-4">
-        <div className="flex items-center gap-2.5 px-1 py-1">
-          <div className="flex size-7 items-center justify-center rounded-lg bg-[var(--accent)] text-white">
+      <div className={`px-4 py-4 ${isCollapsed ? "px-2" : "px-4"}`}>
+        <div className={`flex items-center px-1 py-1 ${isCollapsed ? "justify-center" : "gap-2.5"}`}>
+          <div className="flex size-7 items-center justify-center rounded-lg bg-[var(--accent)] text-white shrink-0">
             <Command className="size-4 shrink-0" />
           </div>
-          <span className="text-sm font-semibold tracking-tight text-foreground">
-            Pipy inc
-          </span>
+          {!isCollapsed && (
+            <span className="text-sm font-semibold tracking-tight text-foreground">
+              Pipy inc
+            </span>
+          )}
         </div>
       </div>
 
       {/* Navigation */}
-      <ScrollShadow className="flex-1 px-3 py-3" hideScrollBar>
+      <ScrollShadow className={`flex-1 ${isCollapsed ? "px-2 py-3" : "px-3 py-3"}`} hideScrollBar>
         <nav>
           <ul className="flex flex-col gap-0.5">
             {navItems.map((item) => {
               const Icon = item.icon;
 
-              if (item.items) {
-                // Collapsible menu using Disclosure
+              if (item.items && !isCollapsed) {
+                // Collapsible menu using Disclosure (only when sidebar is expanded)
                 const isParentActive = pathname.startsWith(item.href);
                 return (
                   <li key={item.label} className="w-full">
@@ -115,20 +126,27 @@ export function Sidebar() {
                 );
               }
 
-              const isActive = item.href === "/" ? pathname === "/" : pathname.startsWith(item.href);
+              // Simple menu item (or item with subitems when sidebar is collapsed)
+              const isActive = item.items 
+                ? pathname.startsWith(item.href) 
+                : (item.href === "/" ? pathname === "/" : pathname.startsWith(item.href));
               return (
                 <li key={item.label}>
                   <a
                     href={item.href}
-                    className={`flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
+                    className={`flex items-center transition-colors ${
+                      isCollapsed
+                        ? "justify-center size-10 mx-auto p-0"
+                        : "gap-3 px-3 py-2 text-sm"
+                    } ${
                       isActive
                         ? "bg-default-100 text-foreground font-semibold"
                         : "text-default-500 hover:bg-default-50 hover:text-foreground font-normal"
                     }`}
                   >
                     <Icon className="size-4 shrink-0" />
-                    <span className="flex-1">{item.label}</span>
-                    {item.badge && (
+                    {!isCollapsed && <span className="flex-1">{item.label}</span>}
+                    {!isCollapsed && item.badge && (
                       <Chip size="sm" color="success" variant="soft">
                         {item.badge}
                       </Chip>
@@ -143,7 +161,7 @@ export function Sidebar() {
 
       {/* Footer: User info */}
       <div className="border-t border-divider px-4 py-4 bg-default-50/50">
-        <div className="flex items-center gap-3 px-1 py-0.5">
+        <div className={`flex items-center ${isCollapsed ? "justify-center px-0" : "gap-3 px-1 py-0.5"}`}>
           <Avatar size="sm" className="shrink-0">
             <Avatar.Image
               src="https://i.pravatar.cc/150?u=kate"
@@ -151,14 +169,16 @@ export function Sidebar() {
             />
             <Avatar.Fallback>KM</Avatar.Fallback>
           </Avatar>
-          <div className="flex min-w-0 flex-col">
-            <span className="text-sm font-semibold leading-tight text-foreground">
-              Kate Moore
-            </span>
-            <span className="text-xs font-normal leading-tight text-default-500">
-              Admin
-            </span>
-          </div>
+          {!isCollapsed && (
+            <div className="flex min-w-0 flex-col">
+              <span className="text-sm font-semibold leading-tight text-foreground">
+                Kate Moore
+              </span>
+              <span className="text-xs font-normal leading-tight text-default-500">
+                Admin
+              </span>
+            </div>
+          )}
         </div>
       </div>
     </aside>
