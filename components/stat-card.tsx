@@ -12,9 +12,9 @@ interface StatCardProps {
 
 export function StatCard({ title, value, trend, trendDirection }: StatCardProps) {
   return (
-    <Card className="p-4 rounded-xl shadow-sm border border-divider">
-      <dt className="text-sm text-default-400 font-medium">{title}</dt>
-      <div className="flex items-center justify-between mt-2">
+    <Card className="px-4 py-3 rounded-xl shadow-sm border border-divider">
+      <dt className="text-xs text-default-500">{title}</dt>
+      <div className="flex items-center justify-between mt-1">
         <dd className="text-2xl font-semibold tabular-nums text-foreground">
           {value}
         </dd>

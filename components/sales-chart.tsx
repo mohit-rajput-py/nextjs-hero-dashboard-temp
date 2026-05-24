@@ -92,7 +92,7 @@ export function SalesChart() {
       </div>
 
       <div className="px-4 pb-3">
-        <div className="flex flex-wrap items-center gap-x-6 gap-y-3 mb-4">
+        <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mb-3">
           <MiniStat value="US$28,441" trend="3.3%" label="Weekly Sales" />
           <MiniStat value="US$4,063" trend="3.3%" label="Daily Sales" />
           <MiniStat value="278" trend="3.3%" label="Total Sales" />

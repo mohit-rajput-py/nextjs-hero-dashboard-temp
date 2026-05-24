@@ -63,7 +63,7 @@ export function TrafficChart() {
       </div>
 
       <div className="px-4 pb-3">
-        <div className="mb-4">
+        <div className="mb-3">
           <span className="text-lg font-semibold tabular-nums text-foreground">
             231,856
           </span>
