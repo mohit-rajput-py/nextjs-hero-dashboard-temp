@@ -245,7 +245,7 @@ export function EmployeeTable() {
 
       {/* Pagination */}
       {mounted && (
-        <div className="flex w-full items-center justify-between pt-4">
+        <div className="flex w-full items-center justify-between pt-1.5">
           <Pagination size="sm" className="w-full">
             <Pagination.Summary>
               Showing {startItem}-{endItem} of {filteredEmployees.length} results
