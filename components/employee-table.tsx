@@ -1,5 +1,6 @@
 "use client";
 
+import * as React from "react";
 import {
   Table,
   Avatar,
@@ -85,6 +86,15 @@ const employees: Employee[] = [
 ];
 
 export function EmployeeTable() {
+  const [mounted, setMounted] = React.useState(false);
+
+  React.useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+
   return (
     <div className="flex flex-col gap-4">
       {/* Title */}
@@ -186,32 +196,33 @@ export function EmployeeTable() {
 
                   {/* Actions */}
                   <Table.Cell>
-                    <div className="flex items-center justify-end gap-0.5">
-                      <Dropdown>
-                        <Dropdown.Trigger>
+                    <div className="flex items-center justify-end gap-0.5 min-h-[32px]">
+                      {mounted && (
+                        <Dropdown>
                           <Button
                             isIconOnly
                             size="sm"
                             variant="ghost"
+                            className="bg-transparent hover:bg-default-100"
                             aria-label="Actions"
                           >
                             <MoreHorizontal className="size-4 text-default-500" />
                           </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Popover>
-                          <Dropdown.Menu aria-label="Employee actions">
-                            <Dropdown.Item id="view" textValue="View details">
-                              <Label>View details</Label>
-                            </Dropdown.Item>
-                            <Dropdown.Item id="edit" textValue="Edit employee">
-                              <Label>Edit employee</Label>
-                            </Dropdown.Item>
-                            <Dropdown.Item id="delete" textValue="Delete employee" variant="danger">
-                              <Label className="text-danger">Delete employee</Label>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown.Popover>
-                      </Dropdown>
+                          <Dropdown.Popover>
+                            <Dropdown.Menu aria-label="Employee actions">
+                              <Dropdown.Item id="view" textValue="View details">
+                                <Label>View details</Label>
+                              </Dropdown.Item>
+                              <Dropdown.Item id="edit" textValue="Edit employee">
+                                <Label>Edit employee</Label>
+                              </Dropdown.Item>
+                              <Dropdown.Item id="delete" textValue="Delete employee" variant="danger">
+                                <Label className="text-danger">Delete employee</Label>
+                              </Dropdown.Item>
+                            </Dropdown.Menu>
+                          </Dropdown.Popover>
+                        </Dropdown>
+                      )}
                     </div>
                   </Table.Cell>
                 </Table.Row>

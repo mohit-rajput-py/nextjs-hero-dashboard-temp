@@ -67,3 +67,46 @@ To prevent code clutter when stacking utilities, follow these patterns:
    - Visual Styling (`bg-*`, `border-*`, `rounded-*`, `shadow-*`)
    - Interactive States (`hover:*`, `focus:*`, `active:*`, `transition-*`)
 2. **Avoid Inline Duplication**: When creating custom gradients or status styles, define them in a configuration map object (as seen in the `<TodoBoard>` data map) rather than repeating long class templates inside the loop rendering logic.
+
+---
+
+## 5. React & Next.js SSR Hydration Lessons
+
+To maintain layout stability and eliminate React rendering errors, developers must follow these critical practices:
+
+### A. Preventing Synchronous Cascading Renders
+* **Problem**: Calling `setState` synchronously within a `useEffect` triggers immediate cascading re-renders. This hurts browser performance and triggers framework build warnings.
+* **Solution**: Defer state synchronizations (such as layout collapse tracking or mounted indicators) to the next animation frame using `requestAnimationFrame`:
+  ```tsx
+  React.useEffect(() => {
+    const frameId = requestAnimationFrame(() => {
+      setMounted(true);
+    });
+    return () => cancelAnimationFrame(frameId);
+  }, []);
+  ```
+
+### B. Deferring Dynamic Interactive Overlays
+* **Problem**: Complex overlay components (like `<Dropdown>`, `<Popover>`, `<Modal>`, or `<Tooltip>`) generate randomized accessibility IDs on render and are prone to browser extension attribute injections, causing mismatch conflicts between the server-rendered HTML and client-side output.
+* **Solution**: Wrap active popups and interactive menus in a client-side `mounted` gate so they only instantiate on the browser:
+  ```tsx
+  {mounted && (
+    <Dropdown>
+      {/* trigger and overlay popover */}
+    </Dropdown>
+  )}
+  ```
+
+### C. Eliminating Nested Trigger Controls
+* **Problem**: Wrapping a `<Button>` inside trigger elements (like `<Dropdown.Trigger>`) often nests multiple `<button>` tags directly in the HTML tree, which is invalid HTML syntax and breaks React's hydration parser.
+* **Solution**: Place custom trigger buttons directly inside the controller component as the immediate child (without nesting extra button wrappers):
+  ```tsx
+  <Dropdown>
+    <Button isIconOnly variant="ghost">
+      <MoreHorizontal />
+    </Button>
+    <Dropdown.Popover>
+      {/* ... */}
+    </Dropdown.Popover>
+  </Dropdown>
+  ```
