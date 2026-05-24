@@ -6,15 +6,15 @@ import {
   Button,
   Chip,
   SearchField,
+  Dropdown,
+  Label,
 } from "@heroui/react";
 import {
-  Eye,
-  Pencil,
-  Trash2,
   Copy,
   SlidersHorizontal,
   ArrowDownUp,
   Columns3,
+  MoreHorizontal,
 } from "lucide-react";
 
 interface Employee {
@@ -187,30 +187,31 @@ export function EmployeeTable() {
                   {/* Actions */}
                   <Table.Cell>
                     <div className="flex items-center justify-end gap-0.5">
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="tertiary"
-                        aria-label="View"
-                      >
-                        <Eye className="size-4" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="tertiary"
-                        aria-label="Edit"
-                      >
-                        <Pencil className="size-4" />
-                      </Button>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="danger-soft"
-                        aria-label="Delete"
-                      >
-                        <Trash2 className="size-4" />
-                      </Button>
+                      <Dropdown>
+                        <Dropdown.Trigger>
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            variant="ghost"
+                            aria-label="Actions"
+                          >
+                            <MoreHorizontal className="size-4 text-default-500" />
+                          </Button>
+                        </Dropdown.Trigger>
+                        <Dropdown.Popover>
+                          <Dropdown.Menu aria-label="Employee actions">
+                            <Dropdown.Item id="view" textValue="View details">
+                              <Label>View details</Label>
+                            </Dropdown.Item>
+                            <Dropdown.Item id="edit" textValue="Edit employee">
+                              <Label>Edit employee</Label>
+                            </Dropdown.Item>
+                            <Dropdown.Item id="delete" textValue="Delete employee" variant="danger">
+                              <Label className="text-danger">Delete employee</Label>
+                            </Dropdown.Item>
+                          </Dropdown.Menu>
+                        </Dropdown.Popover>
+                      </Dropdown>
                     </div>
                   </Table.Cell>
                 </Table.Row>
