@@ -12,7 +12,7 @@ export function TopNavbar() {
         </Button>
 
         <h1 className="text-xl font-semibold text-foreground truncate">
-          Good morning, Kate
+          Good morning, Piyu
         </h1>
 
         <div className="flex-1" />
