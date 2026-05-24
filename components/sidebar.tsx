@@ -53,7 +53,7 @@ export function Sidebar() {
   // Close mobile drawer on route change
   React.useEffect(() => {
     closeMobile();
-  }, [pathname]);
+  }, [pathname, closeMobile]);
 
   return (
     <>

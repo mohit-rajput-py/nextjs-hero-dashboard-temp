@@ -98,40 +98,42 @@ export function SalesChart() {
           <MiniStat value="278" trend="3.3%" label="Total Sales" />
         </div>
 
-        <ResponsiveContainer width="100%" height={180}>
-          <BarChart data={data} barSize={16}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-              stroke="#e4e4e7"
-            />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 12, fill: "#a1a1aa" }}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 12, fill: "#a1a1aa" }}
-            />
-            <Tooltip
-              cursor={{ fill: "rgba(0,0,0,0.04)" }}
-              contentStyle={{
-                borderRadius: 8,
-                border: "1px solid #e4e4e7",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
-                fontSize: 13,
-              }}
-            />
-            <Bar
-              dataKey="sales"
-              fill="#006FEE"
-              radius={[8, 8, 0, 0]}
-            />
-          </BarChart>
-        </ResponsiveContainer>
+        <div className="w-full min-w-0 overflow-hidden">
+          <ResponsiveContainer width="100%" height={180}>
+            <BarChart data={data} barSize={16}>
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#e4e4e7"
+              />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 12, fill: "#a1a1aa" }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 12, fill: "#a1a1aa" }}
+              />
+              <Tooltip
+                cursor={{ fill: "rgba(0,0,0,0.04)" }}
+                contentStyle={{
+                  borderRadius: 8,
+                  border: "1px solid #e4e4e7",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+                  fontSize: 13,
+                }}
+              />
+              <Bar
+                dataKey="sales"
+                fill="#006FEE"
+                radius={[8, 8, 0, 0]}
+              />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </Card>
   );

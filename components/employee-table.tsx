@@ -247,8 +247,8 @@ export function EmployeeTable() {
 
       {/* Pagination */}
       {mounted && (
-        <div className="flex w-full items-center justify-between pt-1.5">
-          <Pagination size="sm" className="w-full">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between w-full pt-1.5 min-w-0">
+          <Pagination size="sm" className="w-full flex-col sm:flex-row gap-2">
             <Pagination.Summary>
               Showing {startItem}-{endItem} of {filteredEmployees.length} results
             </Pagination.Summary>
@@ -259,7 +259,7 @@ export function EmployeeTable() {
                   onPress={() => setPage((p) => p - 1)}
                 >
                   <Pagination.PreviousIcon />
-                  <span>Previous</span>
+                  <span className="hidden sm:inline">Previous</span>
                 </Pagination.Previous>
               </Pagination.Item>
               {getPageNumbers().map((p, i) =>
@@ -283,7 +283,7 @@ export function EmployeeTable() {
                   isDisabled={page === totalPages || filteredEmployees.length === 0}
                   onPress={() => setPage((p) => p + 1)}
                 >
-                  <span>Next</span>
+                  <span className="hidden sm:inline">Next</span>
                   <Pagination.NextIcon />
                 </Pagination.Next>
               </Pagination.Item>

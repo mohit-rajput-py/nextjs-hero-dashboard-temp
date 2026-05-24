@@ -17,3 +17,9 @@
   --color-chart-3: #005bc4;
   --color-chart-4: #7dd3fc;
 }
+
+html,
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}

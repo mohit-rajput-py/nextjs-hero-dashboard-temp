@@ -16,7 +16,7 @@ function LayoutShellContent({ children }: { children: React.ReactNode }) {
       <div className={`flex flex-1 flex-col min-w-0 max-w-full transition-all duration-300 ml-0 ${isCollapsed ? "lg:ml-16" : "lg:ml-(--sidebar-width)"}`}>
         <TopNavbar />
         <main className="flex-1 min-w-0 max-w-full">
-          <div className="mx-auto max-w-7xl px-5 py-3 pb-10 flex flex-col gap-4 min-w-0 max-w-full">
+          <div className="mx-auto w-full max-w-7xl px-5 py-3 pb-10 flex flex-col gap-4 min-w-0">
             {children}
           </div>
         </main>

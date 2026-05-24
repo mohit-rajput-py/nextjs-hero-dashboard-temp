@@ -43,34 +43,32 @@ export function TopNavbar() {
   };
 
   const handleToggle = () => {
-    if (typeof window !== "undefined" && window.innerWidth >= 1024) {
-      toggle();
-    } else {
-      toggleMobile();
-    }
+    console.log("TopNavbar: handleToggle pressed");
+    toggle();
+    toggleMobile();
   };
 
   return (
     <header className="sticky top-0 z-40 h-16 bg-background w-full">
       <div className="mx-auto max-w-7xl h-full flex items-center px-5 gap-3 w-full min-w-0">
-        <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar" onClick={handleToggle}>
+        <Button isIconOnly size="sm" variant="ghost" aria-label="Toggle sidebar" onPress={handleToggle}>
           <PanelLeft className="size-4" />
         </Button>
 
-        <h1 className="text-xl font-semibold text-foreground truncate min-w-0 flex-shrink">
+        <h1 className="text-xl font-semibold text-foreground truncate min-w-0 shrink">
           Good morning, Piyu!
         </h1>
 
         <div className="flex-1 min-w-0" />
 
-        <div className="flex items-center gap-2 flex-shrink-0">
+        <div className="flex items-center gap-2 shrink-0">
           {mounted && (
             <Button
               isIconOnly
               size="sm"
               variant="tertiary"
               aria-label="Toggle theme"
-              onClick={toggleTheme}
+              onPress={toggleTheme}
             >
               {theme === "dark" ? (
                 <Sun className="size-4 text-warning" />

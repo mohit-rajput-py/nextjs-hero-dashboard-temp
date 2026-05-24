@@ -70,51 +70,53 @@ export function TrafficChart() {
           <span className="text-xs text-default-400 ml-1">Sessions</span>
         </div>
 
-        <ResponsiveContainer width="100%" height={180}>
-          <LineChart data={data}>
-            <CartesianGrid
-              strokeDasharray="3 3"
-              vertical={false}
-              stroke="#e4e4e7"
-            />
-            <XAxis
-              dataKey="month"
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 12, fill: "#a1a1aa" }}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              tick={{ fontSize: 12, fill: "#a1a1aa" }}
-              tickFormatter={(v: number) =>
-                v >= 1000 ? `${v / 1000}k` : `${v}`
-              }
-            />
-            <Tooltip
-              contentStyle={{
-                borderRadius: 8,
-                border: "1px solid #e4e4e7",
-                boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
-                fontSize: 13,
-              }}
-            />
-            <Line
-              type="monotone"
-              dataKey="organic"
-              stroke="#338ef7"
-              strokeWidth={2}
-              dot={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="paidAds"
-              stroke="#7dd3fc"
-              strokeWidth={2}
-              dot={false}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="w-full min-w-0 overflow-hidden">
+          <ResponsiveContainer width="100%" height={180}>
+            <LineChart data={data}>
+              <CartesianGrid
+                strokeDasharray="3 3"
+                vertical={false}
+                stroke="#e4e4e7"
+              />
+              <XAxis
+                dataKey="month"
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 12, fill: "#a1a1aa" }}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                tick={{ fontSize: 12, fill: "#a1a1aa" }}
+                tickFormatter={(v: number) =>
+                  v >= 1000 ? `${v / 1000}k` : `${v}`
+                }
+              />
+              <Tooltip
+                contentStyle={{
+                  borderRadius: 8,
+                  border: "1px solid #e4e4e7",
+                  boxShadow: "0 4px 14px rgba(0,0,0,0.08)",
+                  fontSize: 13,
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="organic"
+                stroke="#338ef7"
+                strokeWidth={2}
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="paidAds"
+                stroke="#7dd3fc"
+                strokeWidth={2}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </div>
     </Card>
   );

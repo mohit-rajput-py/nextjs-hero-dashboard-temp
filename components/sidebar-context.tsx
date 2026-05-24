@@ -16,9 +16,17 @@ export function SidebarProvider({ children }: { children: React.ReactNode }) {
   const [isCollapsed, setIsCollapsed] = React.useState(false);
   const [isMobileOpen, setIsMobileOpen] = React.useState(false);
 
-  const toggle = () => setIsCollapsed((prev) => !prev);
-  const toggleMobile = () => setIsMobileOpen((prev) => !prev);
-  const closeMobile = () => setIsMobileOpen(false);
+  const toggle = React.useCallback(() => {
+    setIsCollapsed((prev) => !prev);
+  }, []);
+
+  const toggleMobile = React.useCallback(() => {
+    setIsMobileOpen((prev) => !prev);
+  }, []);
+
+  const closeMobile = React.useCallback(() => {
+    setIsMobileOpen(false);
+  }, []);
 
   return (
     <SidebarContext.Provider
